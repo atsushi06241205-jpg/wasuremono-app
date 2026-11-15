@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>忘れ物チェック</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div id="homePage" class="container page">
+    <h1>忘れ物チェック</h1>
+    <p>今日必要なものを確認しよう</p>
+
+    <section aria-labelledby="todayScheduleHeading" class="today-schedules">
+      <h2 id="todayScheduleHeading">今日の予定と持ち物</h2>
+      <p class="schedule-hint">各予定の持ち物は、忘れた回数が多い順に表示します。</p>
+      <div id="todayScheduleList"></div>
+      <p id="homeScheduleStatus" role="status"></p>
+    </section>
+
+    <section class="weather-panel" aria-labelledby="weatherHeading">
+      <h2 id="weatherHeading" class="section-heading">天気に合わせた持ち物</h2>
+      <label for="weatherCity">予報の地域</label>
+      <select id="weatherCity">
+        <option value="sapporo">札幌</option><option value="sendai">仙台</option>
+        <option value="tokyo" selected>東京</option><option value="nagoya">名古屋</option>
+        <option value="osaka">大阪</option><option value="hiroshima">広島</option>
+        <option value="fukuoka">福岡</option><option value="naha">那覇</option>
+      </select>
+      <p class="schedule-hint">選択地域の今日の予報から提案します。降水確率40%以上で傘、最高気温25℃以上で飲み物、最低気温15℃以下で上着を表示します。</p>
+      <button type="button" id="weatherSuggestButton">天気から提案</button>
+      <button type="button" id="locationWeatherButton">📍 現在地から提案</button>
+      <p class="schedule-hint">現在地を使う場合は位置情報の許可が必要です。緯度・経度を小数点以下2桁に丸めて天気サービスへ送信します。位置情報はアプリには保存しません。</p>
+      <p id="weatherStatus" role="status"></p>
+      <p id="weatherSummary"></p>
+      <ul id="weatherSuggestions"></ul>
+      <small>天気データ：<a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo</a>（CC BY 4.0）。提案条件は本アプリ独自の目安です。</small>
+    </section>
+
+    <h2 class="section-heading">いつもの持ち物</h2>
+    <div class="input-area">
+      <input type="text" id="itemInput" placeholder="例：学生証">
+      <button id="addButton">追加</button>
+    </div>
+
+    <ul id="itemList"></ul>
+  </div>
+  <div id="schedulePage" class="container page hidden">
+  <h1>予定</h1>
+  <p>予定と持ち物を確認しよう</p>
+
+  <div id="calendar">
+    <div class="calendar-header">
+      <button type="button" id="prevMonth" aria-label="前の月">‹</button>
+      <h2 id="calendarMonth" aria-live="polite"></h2>
+      <button type="button" id="nextMonth" aria-label="次の月">›</button>
+    </div>
+    <table class="calendar-table" aria-labelledby="calendarMonth">
+      <thead>
+        <tr>
+          <th scope="col" class="sunday">日</th>
+          <th scope="col">月</th>
+          <th scope="col">火</th>
+          <th scope="col">水</th>
+          <th scope="col">木</th>
+          <th scope="col">金</th>
+          <th scope="col" class="saturday">土</th>
+        </tr>
+      </thead>
+      <tbody id="calendarDays"></tbody>
+    </table>
+    <button type="button" id="todayButton">今月に戻る</button>
+  </div>
+  <section class="schedule-details" aria-labelledby="selectedDateHeading">
+    <h2 id="selectedDateHeading"></h2>
+    <form id="scheduleForm">
+      <label for="templateSelect">持ち物テンプレート</label>
+      <div class="input-area template-picker">
+        <select id="templateSelect"></select>
+        <button type="button" id="applyTemplateButton">持ち物に追加</button>
+      </div>
+      <p class="schedule-hint">「テンプレート」画面で作成できます。入力済みの持ち物は残して追加します。</p>
+      <label for="scheduleInput">予定の名前</label>
+      <div class="input-area">
+        <input id="scheduleInput" type="text" placeholder="例：ゼミ、バイト" maxlength="100" required>
+      </div>
+      <label for="scheduleItemsInput">必要な持ち物（1行に1つ）</label>
+      <textarea id="scheduleItemsInput" rows="3" placeholder="パソコン&#10;資料&#10;筆記用具" maxlength="2000"></textarea>
+      <button type="submit" id="addScheduleButton">予定を追加</button>
+    </form>
+    <p id="scheduleEmpty">この日の予定はありません</p>
+    <ul id="scheduleList" aria-live="polite"></ul>
+    <p id="scheduleStatus" role="status"></p>
+  </section>
+</div>
+  <div id="settingsPage" class="container page hidden">
+    <h1>テンプレート</h1>
+    <p>よく使う持ち物セットを管理しよう</p>
+    <h2 class="section-heading" id="templateFormHeading">テンプレートを作成</h2>
+    <form id="templateForm" class="template-form">
+      <label for="templateNameInput">テンプレート名</label>
+      <input id="templateNameInput" type="text" placeholder="例：大学、バイト、旅行" maxlength="100" required>
+      <label for="templateItemsInput">持ち物（1行に1つ）</label>
+      <textarea id="templateItemsInput" rows="4" placeholder="学生証&#10;パソコン&#10;筆記用具" maxlength="2000" required></textarea>
+      <button type="submit" id="saveTemplateButton">保存</button>
+      <button type="button" id="cancelTemplateButton" hidden>編集をやめる</button>
+    </form>
+    <p id="templateStatus" role="status"></p>
+    <h2 class="section-heading">保存したテンプレート</h2>
+    <p id="templateEmpty" class="schedule-hint">テンプレートはまだありません。</p>
+    <ul id="templateList"></ul>
+  </div>
+  <div id="historyPage" class="container page hidden">
+    <h1>忘れ物履歴</h1>
+    <p>記録した忘れ物を振り返ろう</p>
+    <p class="schedule-hint">ホームの「忘れた」から記録できます。未チェックの持ち物は自動では記録されません。</p>
+    <p id="historyStatus" role="status"></p>
+    <h2 class="section-heading">忘れやすい持ち物ランキング</h2>
+    <ol id="forgottenRanking"></ol>
+    <h2 class="section-heading">記録一覧</h2>
+    <p id="historyEmpty" class="schedule-hint">忘れ物の記録はまだありません。</p>
+    <ul id="forgottenList"></ul>
+  </div>
+<nav class="bottom-nav">
+ <button class="nav-item active" id="homeNav">
+  <span>🏠</span>
+  <small>ホーム</small>
+</button>
+
+<button class="nav-item" id="scheduleNav">
+  <span>📅</span>
+  <small>予定</small>
+</button>
+  <button class="nav-item" id="historyNav">
+    <span>📋</span>
+    <small>履歴</small>
+  </button>
+
+  <button class="nav-item" id="settingsNav">
+    <span>🗂️</span>
+    <small>テンプレート</small>
+  </button>
+</nav>
+  <script src="script.js"></script>
+</body>
+</html>

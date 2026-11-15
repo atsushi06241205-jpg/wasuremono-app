@@ -1,0 +1,564 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #f2f4f7;
+  color: #222;
+}
+
+.container {
+  width: 100%;
+  max-width: 430px;
+  min-height: 100vh;
+  margin: 0 auto;
+  background: #ffffff;
+  padding: 24px 20px 96px;
+}
+
+h1 {
+  margin: 10px 0 4px;
+  font-size: 28px;
+  text-align: center;
+}
+
+.container > p {
+  margin: 0 0 28px;
+  text-align: center;
+  color: #777;
+  font-size: 14px;
+}
+
+.input-area {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+#itemInput {
+  flex: 1;
+  padding: 14px 16px;
+  border: 1px solid #ddd;
+  border-radius: 14px;
+  font-size: 16px;
+  outline: none;
+}
+
+#itemInput:focus {
+  border-color: #555;
+}
+
+button {
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+#addButton {
+  padding: 0 18px;
+  border-radius: 14px;
+  background: #222;
+  color: white;
+  font-weight: bold;
+}
+
+#itemList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#itemList li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #f8f9fb;
+  margin-bottom: 12px;
+  padding: 14px;
+  border-radius: 16px;
+}
+
+#itemList li span {
+  flex: 1;
+  font-size: 16px;
+}
+
+#itemList input[type="checkbox"] {
+  width: 22px;
+  height: 22px;
+}
+
+.deleteButton {
+  padding: 8px 12px;
+  background: #ffffff;
+  border-radius: 10px;
+  color: #666;
+}
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 430px;
+  display: flex;
+  justify-content: space-around;
+  background: white;
+  border-top: 1px solid #ddd;
+  padding: 8px 0 12px;
+}
+
+.nav-item {
+  background: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  color: #888;
+}
+
+.nav-item span {
+  font-size: 20px;
+}
+
+.nav-item small {
+  font-size: 11px;
+}
+
+.nav-item.active {
+  color: #222;
+}
+.hidden {
+  display: none;
+}
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.calendar-header h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.calendar-header button {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: #f2f4f7;
+  color: #222;
+  font-size: 28px;
+}
+
+.calendar-table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+.calendar-table th {
+  padding: 10px 0;
+  font-size: 13px;
+  color: #777;
+}
+
+.calendar-table td {
+  height: 48px;
+  padding: 3px 0;
+}
+
+.calendar-day {
+  position: relative;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+}
+
+.calendar-table .sunday {
+  color: #c43b3b;
+}
+
+.calendar-table .saturday {
+  color: #326bc4;
+}
+
+.calendar-day.today {
+  background: #222;
+  color: white;
+  font-weight: bold;
+}
+
+#todayButton {
+  display: block;
+  margin: 20px auto 0;
+  padding: 12px 18px;
+  border-radius: 12px;
+  background: #f2f4f7;
+  color: #222;
+}
+
+.calendar-header button:focus-visible,
+#todayButton:focus-visible {
+  outline: 2px solid #326bc4;
+  outline-offset: 3px;
+}
+
+.calendar-day.selected {
+  outline: 2px solid #326bc4;
+  outline-offset: 2px;
+}
+
+.calendar-day:focus-visible {
+  outline: 3px solid #326bc4;
+  outline-offset: 2px;
+}
+
+.calendar-day.has-schedules::after {
+  content: "";
+  position: absolute;
+  bottom: 3px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.schedule-details {
+  margin-top: 28px;
+  border-top: 1px solid #eee;
+  padding-top: 20px;
+}
+
+.schedule-details h2 {
+  font-size: 18px;
+  margin: 0 0 16px;
+}
+
+#scheduleForm label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+#scheduleInput {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  padding: 14px 12px;
+  border: 1px solid #ddd;
+  border-radius: 14px;
+  font-size: 16px;
+}
+
+#addScheduleButton {
+  padding: 0 18px;
+  border-radius: 14px;
+  background: #222;
+  color: white;
+  font-weight: bold;
+}
+
+#scheduleList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#scheduleList li {
+  display: block;
+  padding: 14px;
+  margin-bottom: 12px;
+  background: #f8f9fb;
+  border-radius: 16px;
+}
+
+#scheduleList li span {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+#scheduleEmpty {
+  color: #777;
+  font-size: 14px;
+}
+
+#scheduleStatus {
+  color: #b3261e;
+  font-size: 14px;
+}
+
+.section-heading,
+.today-schedules h2 {
+  font-size: 18px;
+  margin: 20px 0 14px;
+}
+
+.today-schedules {
+  margin-bottom: 28px;
+}
+
+.today-schedule-card {
+  background: #f8f9fb;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.today-schedule-card h3 {
+  font-size: 16px;
+  margin: 0 0 12px;
+  overflow-wrap: anywhere;
+}
+
+.scheduled-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  overflow-wrap: anywhere;
+}
+
+.scheduled-item input {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+.scheduled-item input:checked + span {
+  color: #777;
+  text-decoration: line-through;
+}
+
+.schedule-hint {
+  font-size: 14px;
+  color: #777;
+  line-height: 1.6;
+}
+
+.schedule-entry-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.schedule-entry-header .deleteButton {
+  flex-shrink: 0;
+}
+
+#scheduleItemsInput,
+.belongings-form textarea {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  margin: 8px 0 12px;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  font: inherit;
+  font-size: 16px;
+  resize: vertical;
+}
+
+.belongings-form label {
+  font-size: 14px;
+}
+
+#addScheduleButton,
+.save-belongings {
+  padding: 12px 18px;
+  margin-bottom: 16px;
+  border-radius: 12px;
+  color: white;
+  background: #222;
+}
+
+#homeScheduleStatus {
+  color: #b3261e;
+  font-size: 14px;
+}
+
+.template-form label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.template-form input,
+.template-form textarea,
+.template-picker select {
+  width: 100%;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  background: white;
+  color: #222;
+  font: inherit;
+  font-size: 16px;
+}
+
+.template-form input,
+.template-form textarea {
+  margin-bottom: 16px;
+}
+
+.template-form textarea {
+  resize: vertical;
+}
+
+.template-picker select {
+  flex: 1;
+}
+
+.template-form button,
+.template-picker button,
+#templateList button {
+  padding: 12px;
+  border-radius: 12px;
+  background: #222;
+  color: white;
+}
+
+.template-picker button {
+  flex-shrink: 0;
+}
+
+button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+#templateList {
+  list-style: none;
+  padding: 0;
+}
+
+#templateList li {
+  padding: 16px;
+  margin-bottom: 12px;
+  border-radius: 16px;
+  background: #f8f9fb;
+  overflow-wrap: anywhere;
+}
+
+#templateList h3 {
+  margin: 0 0 12px;
+  font-size: 16px;
+}
+
+#templateList button {
+  margin-right: 8px;
+}
+
+.template-contents {
+  white-space: pre-wrap;
+  line-height: 1.6;
+}
+
+#templateStatus {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.scheduled-item-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.scheduled-item-row .scheduled-item {
+  flex: 1;
+  min-width: 0;
+}
+
+.forgot-button {
+  flex-shrink: 0;
+  border-radius: 10px;
+  padding: 10px;
+  color: #a13222;
+  background: #ffede9;
+}
+
+#forgottenList {
+  list-style: none;
+  padding: 0;
+}
+
+#forgottenList li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  background: #f8f9fb;
+  border-radius: 14px;
+  margin-bottom: 12px;
+}
+
+#forgottenList span {
+  flex: 1;
+  min-width: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  line-height: 1.7;
+}
+
+#forgottenList button {
+  flex-shrink: 0;
+}
+
+#forgottenRanking {
+  padding-left: 28px;
+  line-height: 2;
+  overflow-wrap: anywhere;
+}
+
+#historyStatus {
+  font-size: 14px;
+}
+
+.forgotten-count {
+  display: block;
+  margin-top: 4px;
+  color: #a13222;
+  font-size: 12px;
+  text-decoration: none;
+}
+
+.weather-panel {
+  margin: 24px 0;
+  padding: 16px;
+  border: 1px solid #ddd;
+  border-radius: 16px;
+}
+.weather-panel h2 { margin-top: 0; }
+.weather-panel label { display: block; margin-bottom: 8px; }
+#weatherCity {
+  width: 100%; padding: 12px; border: 1px solid #ddd;
+  border-radius: 10px; background: white; font: inherit;
+}
+.weather-panel button {
+  padding: 12px; border-radius: 10px; background: #222; color: white;
+}
+#weatherSuggestions { list-style: none; padding: 0; }
+#weatherSuggestions li {
+  padding: 14px; margin-bottom: 12px; background: #f8f9fb;
+  border-radius: 12px; overflow-wrap: anywhere;
+}
+#weatherSuggestions p, #weatherSummary, #weatherStatus { font-size: 14px; line-height: 1.7; }
+.weather-panel small { display: block; line-height: 1.6; color: #666; }
+
+#locationWeatherButton { margin-top: 8px; }
